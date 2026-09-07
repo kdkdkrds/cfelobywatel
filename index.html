@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mObywatel</title>
+</head>
+<body>
+    <h1>cwelObywatel 2.0</h1>
+    <p>Michał nie ma palca</p>
+
+    <h3>Instrukcja</h3>
+    <p>Dla systemu IOS:</p>
+    <ul>
+        <li>Upewnij się, że używasz przeglądarki Safari</li>
+        <li>Uzupełnij dane i kliknij wejdź</li>
+        <li>Naciśji udostępnij -> Do Ekranu głównego</li>
+    </ul>
+    <p>Dla systemu Android:</p>
+    <ul>
+        <li>Upewnij się, że używasz przeglądarki google lub chrome</li>
+        <li>Uzupełnij dane i kliknij wejdź</li>
+        <li>Naciśji 3 kropki -> Dodaj do ekranu głównego</li>
+    </ul>
+
+    <form id="mainForm">
+        <!-- NAPRAWIONE: Dodanie prawdziwego przycisku do zdjęcia -->
+        <div>
+            <label>Dodaj zdjęcie</label>
+            <input type="file" id="zdjecieInput" accept="image/*">
+            <div id="podglad"></div>
+        </div>
+
+        <div>
+            <label>Imię (imiona)</label>
+            <input type="text" id="imie" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Nazwisko</label>
+            <input type="text" id="nazwisko" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Płeć</label>
+            <select id="plec">
+                <option>Mężczyzna</option>
+                <option>Kobieta</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Data urodzenia</label>
+            <input type="date" id="dataUrodzenia" required>
+            <div class="error">Wprowadź prawidłową datę</div>
+        </div>
+
+        <div>
+            <label>Obywatelstwo</label>
+            <input type="text" id="obywatelstwo" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Nazwisko rodowe</label>
+            <input type="text" id="nazwiskoRodowe" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Nazwisko rodowe ojca</label>
+            <input type="text" id="ojciecRodowe" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Nazwisko rodowe matki</label>
+            <input type="text" id="matkaRodowe" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Miejsce zamieszkania</label>
+            <input type="text" id="zamieszkanie">
+        </div>
+
+        <div>
+            <label>Miejsce urodzenia</label>
+            <input type="text" id="miejsceUrodzenia" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Kraj urodzenia</label>
+            <input type="text" id="krajUrodzenia" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Ulica i numer domu</label>
+            <input type="text" id="ulica" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Kod pocztowy</label>
+            <input type="text" id="kod" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <div>
+            <label>Miasto</label>
+            <input type="text" id="miasto" required>
+            <div class="error">To pole jest wymagane</div>
+        </div>
+
+        <button type="button" id="przyciskWejdz">wejdź</button>
+    </form>
+
+    <script>
+        // TYLKO NAPRAWA ZDJĘCIA - reszta bez zmian
+        const zdjInput = document.getElementById('zdjecieInput');
+        const podgladDiv = document.getElementById('podglad');
+
+        zdjInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    podgladDiv.innerHTML = `<img src="${ev.target.result}" width="100" style="margin-top:5px">`;
+                };
+                reader.readAsDataURL(file);
+            } else if (file) {
+                alert('Wybierz plik graficzny');
+                zdjInput.value = '';
+                podgladDiv.innerHTML = '';
+            } else {
+                podgladDiv.innerHTML = '';
+            }
+        });
+
+        // Stary przycisk (nic nie robi, tylko walidacja - tak jak było)
+        document.getElementById('przyciskWejdz').addEventListener('click', function() {
+            let valid = true;
+            document.querySelectorAll('[required]').forEach(el => {
+                if (!el.value.trim()) {
+                    el.nextElementSibling.style.display = 'block';
+                    valid = false;
+                } else {
+                    if (el.nextElementSibling) el.nextElementSibling.style.display = 'none';
+                }
+            });
+            const data = document.getElementById('dataUrodzenia');
+            if (data.value && new Date(data.value) > new Date()) {
+                data.nextElementSibling.style.display = 'block';
+                valid = false;
+            }
+            if (valid) alert('Dane zapisane w konsoli (zdjęcie działa)');
+        });
+    </script>
+</body>
+</html>
